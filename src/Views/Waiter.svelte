@@ -1,8 +1,10 @@
 <script>
   import { postOrder } from "../Scripts/apiCalls";
+  import { loremIpsum } from "lorem-ipsum";
   function handleClick() {
-    let exampleOrder = {
-      message: "does this work?"
+    const randomSentence = loremIpsum();
+    const exampleOrder = {
+      message: randomSentence
     };
     postOrder(exampleOrder);
   }

@@ -4,7 +4,7 @@ import NotFound from "./Views/NotFound.svelte";
 
 const routes = {
   // Index page for now just Bar
-  "/": Bar,
+  "/": Waiter,
   // Bar
   "/bar": Bar,
 
