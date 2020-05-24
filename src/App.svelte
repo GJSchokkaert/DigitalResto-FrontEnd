@@ -1,11 +1,11 @@
 <script>
-	export let name;
+  import Router from "svelte-spa-router";
+  import routes from "./routes.js";
 </script>
 
 <style>
-	h1 {
-		color: purple;
-	}
+
 </style>
 
-<h1>Hello {name}!</h1>
+<!-- add to enable routing -->
+<Router {routes} />
