@@ -3,19 +3,20 @@
   import serverUrl from "../globals";
   import { getOrders } from "../Scripts/apiCalls";
 
-  let ordersPromise = getOrders();
   let orders;
-  ordersPromise.then(data => (orders = data));
-  const socket = io(serverUrl);
 
+  // get orders from db
+  let ordersPromise = getOrders();
+  ordersPromise.then(data => (orders = data));
+
+  // add order if posted to the database
+  const socket = io(serverUrl);
   socket.on("connect", function() {
     console.log("connected to io server");
   });
 
   socket.on("order", function(order) {
-    console.log("add  new order to the orders array");
-    orders = orders.concat(order);
-    console.log(orders);
+    orders = [...orders, order];
   });
 </script>
 
@@ -25,9 +26,15 @@
 
 Items that are order from the waiter view:
 <ul>
-  {#await ordersPromise then items}
-    {#each items as item}
+  {#if orders}
+    {#each orders as item}
       <li>{item.message}</li>
     {/each}
-  {/await}
+  {:else}
+    {#await ordersPromise then items}
+      {#each items as item}
+        <li>{item.message}</li>
+      {/each}
+    {/await}
+  {/if}
 </ul>
