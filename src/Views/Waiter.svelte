@@ -2,10 +2,13 @@
   import { postOrder } from "../Scripts/apiCalls";
   import { loremIpsum } from "lorem-ipsum";
   function handleClick() {
-    const randomSentence = loremIpsum();
-    const exampleOrder = {
-      message: randomSentence
-    };
+    let sources = ["bar", "bar", "kitchen", "kitchen", "kitchen"];
+    const exampleOrder = sources.map(function(d) {
+      let tmp = {};
+      tmp.source = d;
+      tmp.message = loremIpsum();
+      return tmp;
+    });
     postOrder(exampleOrder);
   }
 </script>

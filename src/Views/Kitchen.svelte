@@ -6,11 +6,11 @@
   let orders;
 
   // get orders from db
-  let ordersPromise = getOrders("bar");
+  let ordersPromise = getOrders("kitchen");
   ordersPromise.then(data => (orders = data));
 
   // add order if posted to the database
-  const socket = io(serverUrl + "bar");
+  const socket = io(serverUrl + "kitchen");
   socket.on("connect", function() {
     console.log("connected to io server");
   });
