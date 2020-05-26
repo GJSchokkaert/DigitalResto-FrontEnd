@@ -1,3 +1,4 @@
+import Home from "./Views/Home.svelte";
 import Bar from "./Views/Bar.svelte";
 import Waiter from "./Views/Waiter.svelte";
 import Kitchen from "./Views/Kitchen.svelte";
@@ -5,7 +6,7 @@ import NotFound from "./Views/NotFound.svelte";
 
 const routes = {
   // Index page for now just Bar
-  "/": Waiter,
+  "/": Home,
   "/bar": Bar,
   "/waiter": Waiter,
   "/kitchen": Kitchen,
