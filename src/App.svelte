@@ -1,11 +1,12 @@
 <script>
   import Router from "svelte-spa-router";
   import routes from "./routes.js";
+  // export let name;
 </script>
 
 <style>
 
 </style>
 
-<!-- add to enable routing -->
+<!-- Welcome to the {name} app. -->
 <Router {routes} />

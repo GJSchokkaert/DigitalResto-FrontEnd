@@ -9,3 +9,8 @@ export async function getOrders(source) {
   let res = await axios.get(serverUrl + "orders" + "/" + source);
   return res.data;
 }
+
+export async function getUsers() {
+  let res = await axios.get(serverUrl + "users");
+  return res.data;
+}

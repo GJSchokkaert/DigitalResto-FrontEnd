@@ -20,20 +20,20 @@
   });
 </script>
 
-<style>
-  /* your styles go here */
+<style type="text/scss">
+
 </style>
 
-Items that are order from the waiter view:
+<p>Items that are order from the waiter view:</p>
 <ul>
   {#if orders}
-    {#each orders as item}
-      <li>{item.message}</li>
+    {#each orders as order}
+      <li>{order.message}</li>
     {/each}
   {:else}
-    {#await ordersPromise then items}
-      {#each items as item}
-        <li>{item.message}</li>
+    {#await ordersPromise then orders}
+      {#each orders as order}
+        <li>{order.message}</li>
       {/each}
     {/await}
   {/if}

@@ -1,4 +1,6 @@
 <script>
+  import Button from "@smui/button";
+
   import { postOrder } from "../Scripts/apiCalls";
   import { loremIpsum } from "lorem-ipsum";
   function handleClick() {
@@ -18,4 +20,4 @@
 </style>
 
 Hello this is the waiter view.
-<button on:click={handleClick}>Place Order</button>
+<Button on:click={handleClick}>Place Order</Button>

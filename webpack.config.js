@@ -1,22 +1,24 @@
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const path = require("path");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const OptimizeCssAssetsPlugin = require("optimize-css-assets-webpack-plugin");
+const TerserPlugin = require("terser-webpack-plugin");
 
 const mode = process.env.NODE_ENV || "development";
 const prod = mode === "production";
 
 module.exports = {
   entry: {
-    bundle: ["./src/main.js"],
+    bundle: path.resolve(__dirname, "src/index.js"),
   },
   resolve: {
     alias: {
       svelte: path.resolve("node_modules", "svelte"),
     },
-    extensions: [".mjs", ".js", ".svelte"],
+    extensions: [".mjs", ".js", ".svelte", "scss"],
     mainFields: ["svelte", "browser", "module", "main"],
   },
   output: {
-    path: __dirname + "/public",
+    path: path.resolve(__dirname, "public"),
     filename: "[name].js",
     chunkFilename: "[name].[id].js",
   },
@@ -29,18 +31,25 @@ module.exports = {
           options: {
             emitCss: true,
             hotReload: true,
+            preprocess: require("svelte-preprocess")({
+              /* options */
+            }),
           },
         },
       },
       {
-        test: /\.css$/,
+        test: /\.(sa|sc|c)ss$/,
         use: [
-          /**
-           * MiniCssExtractPlugin doesn't support HMR.
-           * For developing, use 'style-loader' instead.
-           * */
           prod ? MiniCssExtractPlugin.loader : "style-loader",
           "css-loader",
+          {
+            loader: "sass-loader",
+            options: {
+              sassOptions: {
+                includePaths: ["./theme", "./node_modules"],
+              },
+            },
+          },
         ],
       },
     ],
@@ -49,7 +58,42 @@ module.exports = {
   plugins: [
     new MiniCssExtractPlugin({
       filename: "[name].css",
+      chunkFilename: "[name].[id].css",
+    }),
+    new OptimizeCssAssetsPlugin({
+      assetNameRegExp: /\.css$/g,
+      cssProcessor: require("cssnano"),
+      cssProcessorPluginOptions: {
+        preset: ["default", { discardComments: { removeAll: true } }],
+      },
+      canPrint: true,
     }),
   ],
-  devtool: prod ? false : "source-map",
 };
+
+if (prod) {
+  module.exports.optimization = {
+    minimize: true,
+    minimizer: [
+      new TerserPlugin({
+        sourceMap: true,
+        extractComments: "some",
+        terserOptions: {
+          ecma: 8,
+          compress: {
+            passes: 3,
+          },
+        },
+      }),
+    ],
+  };
+} else {
+  module.exports.devtool = "source-map";
+
+  module.exports.devServer = {
+    contentBase: "./public",
+    host: "localhost",
+    port: 8080,
+    open: true,
+  };
+}
